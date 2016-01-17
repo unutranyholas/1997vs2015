@@ -115,8 +115,13 @@
 		}
 
 		.y2015 {
+			stroke: #dddddd;
+		}
+
+		.y2016 {
 			stroke: #EE4993;
 		}
+
 
 		.label {
 			font-weight: 500;
@@ -127,8 +132,12 @@
 		}
 
 		.label.y2015 {
+			fill: #dddddd;
+		}
+
+		.label.y2016 {
 			fill: #EE4993;
-		}		
+		}
 
 	</style>
 	
@@ -148,7 +157,7 @@
 	<article>
 		<header>
 			<h1>Верни мне мой 1997</h1>
-			<p>Сравнение курса белорусского рубля к доллару в 1997 и 2015 году. <br>Обновляется каждый день.</p>
+			<p>Сравнение курса белорусского рубля к доллару в 1997 и 2016 году. <br>Обновляется каждый день.</p>
 		</header>
 		<svg class="chart"></svg>
 		<footer>Данные: <a href="http://www.nbrb.by/statistics/Rates/RatesDaily.asp">nbrb.by</a></footer>
@@ -203,6 +212,8 @@
 
 var drawChart = function(response, year) {
 
+		console.log('!!!', year);
+
 		var data = response['Currency']['Record'];
 
 		data.forEach(function(d){
@@ -242,8 +253,8 @@ var loadRates = function(year){
 
 	var url, type;
 
-	if(year === '1997'){
-		url = '1997.json';
+	if (year === '1997' || year === '2015'){
+		url = year + '.json';
 		type = 'json';
 	} else {
 		url = 'http://xml2json.heroku.com?url=http://www.nbrb.by/Services/XmlExRatesDyn.aspx?curId=145%26fromDate=1/1/' + year + '%26toDate=12/31/' + year;
@@ -254,16 +265,18 @@ var loadRates = function(year){
 		type: 'GET',
 		url: url,
 		dataType: type,
-		success: function(response) { 
+		success: function(response) {
 			drawChart(response, year);
 		}, 
 		error: function(error){
+			console.log('error', error);
 		}
 	});
 }
 
 loadRates('1997');
 loadRates('2015');
+loadRates('2016');
 
 </script>	
 
